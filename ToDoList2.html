@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO LIST</title>
-    <link rel="stylesheet" href="todolistCSS.css">
+    <link rel="stylesheet" href="ToDoList2CSS.css">
 </head>
 <body>
     <div class="container">
@@ -16,9 +16,9 @@
         </div>
         <div class="card card_list">
           <ul class="tab">
-            <li class="active">全部</li>
-            <li>待完成</li>
-            <li>已完成</li>
+            <li class="active" data-range="all">全部</li>
+            <li data-range="undone">待完成</li>
+            <li data-range="finish">已完成</li>
           </ul>
           <div class="cart_content">
             <ul class="list">
@@ -31,6 +31,6 @@
           </div>
         </div>
       </div>
-    <script src="todolistJS.js"></script>
+    <script src="ToDoListJS2.js"></script>
 </body>
 </html>
