@@ -1,23 +1,6 @@
 
-
-const test =document.querySelector(".search");
-
-test.addEventListener("click",function(e){
-    alert("測試成功");
-})
-
-let d=[];
-d.forEach(function(){
-    
-})
-
 axios.get('https://hexschool.github.io/js-filter-data/data.json')
   .then(function (response) {
-    //console.log(response.data);
-    //console.log(response.status);
-    //console.log(response.statusText);
-    //console.log(response.headers);
-    //console.log(response.config);
     let data=response.data;
     let showList=document.querySelector(".showList");
     let str="";
@@ -37,29 +20,40 @@ axios.get('https://hexschool.github.io/js-filter-data/data.json')
     showList.innerHTML=str;
   });
 
+//排序順序
+let selectorseq="";
+//篩選條件
+let selectortype="";
+//用作物名稱搜尋
+let searchtext="";
+
 /*
 載入資料
-type辨識種類代碼
 */
-function enterdata(type){
+function enterdata(){
   axios.get('https://hexschool.github.io/js-filter-data/data.json')
   .then(function (response) {
-    //console.log(response.data);
-    //console.log(response.status);
-    //console.log(response.statusText);
-    //console.log(response.headers);
-    //console.log(response.config);
     let data=response.data;
     let showList=document.querySelector(".showList");
     let str="";
 
+    //輸入文字搜尋
+    if(searchtext!=""){
+      data=data.filter(function(item){
+        return item["作物名稱"]==searchtext;
+      });
+    };
+
     //改變排列順序
+    if(selectorseq!=""){
     data.sort(function(a,b){
-      return a["上價"]-b["上價"];
+      return a[selectorseq]-b[selectorseq];
     });
+    };
+
     //篩選資料
     data.forEach(function(item,index){
-        if(item["種類代碼"]==type){
+        if(item["種類代碼"]==selectortype){
             str=str+`<tr><td>${item["作物名稱"]}</td>\
             <td>${item["市場名稱"]}</td>\
             <td>${item["上價"]}</td>\
@@ -69,7 +63,7 @@ function enterdata(type){
             <td>${item["交易量"]}</td>\
             </tr>`;
             console.log(item["作物名稱"]);  
-        }else if(type==""){
+        }else if(selectortype==""){
           str=str+`<tr><td>${item["作物名稱"]}</td>\
             <td>${item["市場名稱"]}</td>\
             <td>${item["上價"]}</td>\
@@ -83,19 +77,31 @@ function enterdata(type){
     });
     showList.innerHTML=str;
   });
-
 }
 
+//篩選條件方法
 let btn=document.querySelectorAll(".btn");
 btn.forEach(function(item,index){
     item.addEventListener("click",function(e){
       console.log("成功"+e.target.dataset.type);
-      enterdata(e.target.dataset.type);
+      selectortype=e.target.dataset.type;
+      enterdata();
     });
 });
 
-let selector=document.querySelector(".sort-select");
 
+//排序順序方法
+let selector=document.querySelector(".sort-select");
 selector.addEventListener("change",function(e){
   console.log(e.target.value);
+  selectorseq=e.target.value;
+  enterdata();
 })
+
+//用作物名稱搜尋
+const searchbtn=document.querySelector(".search");
+searchbtn.addEventListener("click",function(){
+  let searchtext1=document.querySelector(".rounded-end");
+  searchtext=searchtext1.value.trim();
+  enterdata();
+});
