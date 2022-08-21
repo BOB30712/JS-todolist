@@ -21,16 +21,16 @@ axios.get('https://hexschool.github.io/js-filter-data/data.json')
   });
 
 //排序順序
-let selectorseq="";
+let selectorSeq="";
 //篩選條件
-let selectortype="";
+let selectorType="";
 //用作物名稱搜尋
-let searchtext="";
+let searchText="";
 
 /*
 載入資料
 */
-function enterdata(){
+function renderData(){
   axios.get('https://hexschool.github.io/js-filter-data/data.json')
   .then(function (response) {
     let data=response.data;
@@ -38,22 +38,22 @@ function enterdata(){
     let str="";
 
     //輸入文字搜尋
-    if(searchtext!=""){
+    if(searchText!=""){
       data=data.filter(function(item){
-        return item["作物名稱"]==searchtext;
+        return item["作物名稱"]==searchText;
       });
     };
 
     //改變排列順序
-    if(selectorseq!=""){
+    if(selectorSeq!=""){
     data.sort(function(a,b){
-      return a[selectorseq]-b[selectorseq];
+      return a[selectorSeq]-b[selectorSeq];
     });
     };
 
     //篩選資料
     data.forEach(function(item,index){
-        if(item["種類代碼"]==selectortype){
+        if(item["種類代碼"]==selectorType){
             str=str+`<tr><td>${item["作物名稱"]}</td>\
             <td>${item["市場名稱"]}</td>\
             <td>${item["上價"]}</td>\
@@ -63,7 +63,7 @@ function enterdata(){
             <td>${item["交易量"]}</td>\
             </tr>`;
             console.log(item["作物名稱"]);  
-        }else if(selectortype==""){
+        }else if(selectorType==""){
           str=str+`<tr><td>${item["作物名稱"]}</td>\
             <td>${item["市場名稱"]}</td>\
             <td>${item["上價"]}</td>\
@@ -84,8 +84,8 @@ let btn=document.querySelectorAll(".btn");
 btn.forEach(function(item,index){
     item.addEventListener("click",function(e){
       console.log("成功"+e.target.dataset.type);
-      selectortype=e.target.dataset.type;
-      enterdata();
+      selectorType=e.target.dataset.type;
+      renderData();
     });
 });
 
@@ -94,14 +94,14 @@ btn.forEach(function(item,index){
 let selector=document.querySelector(".sort-select");
 selector.addEventListener("change",function(e){
   console.log(e.target.value);
-  selectorseq=e.target.value;
-  enterdata();
+  selectorSeq=e.target.value;
+  renderData();
 })
 
 //用作物名稱搜尋
 const searchbtn=document.querySelector(".search");
 searchbtn.addEventListener("click",function(){
-  let searchtext1=document.querySelector(".rounded-end");
-  searchtext=searchtext1.value.trim();
-  enterdata();
+  let searchText1=document.querySelector(".rounded-end");
+  searchText=searchText1.value.trim();
+  renderData();
 });
