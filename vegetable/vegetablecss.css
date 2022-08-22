@@ -175,3 +175,8 @@ body {
 .table{
     text-align: center;
 }
+
+.button-group .active{
+  background: #f8d45a;
+
+}
